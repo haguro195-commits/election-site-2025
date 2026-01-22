@@ -19,13 +19,22 @@
       </div>
       
       <div class="tab-content">
-        <div v-if="loading" class="loading">ニュースを読み込み中...</div>
+        <div v-if="newsStore.loading" class="loading">
+          <div class="loading-spinner"></div>
+          <p>最新ニュースを取得中...</p>
+        </div>
         <div v-else class="news-list">
+          <div v-if="newsStore.lastUpdated" class="update-info">
+            最終更新: {{ formatDate(newsStore.lastUpdated) }}
+          </div>
           <article 
             v-for="article in filteredNews" 
             :key="article.id"
             class="news-item card"
           >
+            <div v-if="article.imageUrl" class="news-image">
+              <img :src="article.imageUrl" :alt="article.title" />
+            </div>
             <h4>{{ article.title }}</h4>
             <p class="news-meta">{{ formatDate(article.date) }} - {{ article.source }}</p>
             <p>{{ article.summary }}</p>
@@ -121,9 +130,8 @@ export default {
     }
 
     onMounted(() => {
-      loadNews()
-      // 5分ごとに自動更新
-      setInterval(loadNews, 5 * 60 * 1000)
+      // 自動更新を開始（リアルタイムニュース取得）
+      newsStore.startAutoUpdate()
     })
 
     return {
@@ -229,5 +237,41 @@ export default {
   text-align: center;
   padding: 2rem;
   color: #7f8c8d;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.update-info {
+  background: #e8f5e8;
+  color: #2d5a2d;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.news-image {
+  margin-bottom: 1rem;
+}
+
+.news-image img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
 }
 </style>
