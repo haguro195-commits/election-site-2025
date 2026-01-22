@@ -19,7 +19,30 @@
     </main>
     
     <footer class="footer">
-      <p>&copy; 2025 衆議院選挙情報サイト</p>
+      <div class="footer-content">
+        <div class="footer-info">
+          <h3>衆議院選挙2025情報サイト</h3>
+          <p>2025年2月実施予定の衆議院選挙に関する最新情報を提供</p>
+        </div>
+        <div class="footer-links">
+          <div class="link-group">
+            <h4>サイト情報</h4>
+            <a href="#about">このサイトについて</a>
+            <a href="#privacy">プライバシーポリシー</a>
+            <a href="#terms">利用規約</a>
+          </div>
+          <div class="link-group">
+            <h4>お問い合わせ</h4>
+            <a href="#contact">お問い合わせ</a>
+            <a href="#feedback">ご意見・ご要望</a>
+            <a href="#report">不具合報告</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 衆議院選挙情報サイト - 最新の選挙情報をお届けします</p>
+        <p class="disclaimer">※ 議席予測は統計的推定に基づくものであり、実際の選挙結果を保証するものではありません</p>
+      </div>
     </footer>
   </div>
 </template>
@@ -92,8 +115,84 @@ body {
 .footer {
   background: #34495e;
   color: white;
+  padding: 2rem 0 1rem;
+  margin-top: 3rem;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.footer-info h3 {
+  margin-bottom: 0.5rem;
+  color: #3498db;
+}
+
+.footer-info p {
+  color: #bdc3c7;
+  line-height: 1.6;
+}
+
+.footer-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.link-group h4 {
+  margin-bottom: 1rem;
+  color: #3498db;
+  font-size: 1rem;
+}
+
+.link-group a {
+  display: block;
+  color: #bdc3c7;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s;
+}
+
+.link-group a:hover {
+  color: white;
+}
+
+.footer-bottom {
+  border-top: 1px solid #4a5f7a;
+  margin-top: 2rem;
+  padding-top: 1rem;
   text-align: center;
-  padding: 1rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.footer-bottom p {
+  margin-bottom: 0.5rem;
+  color: #bdc3c7;
+}
+
+.disclaimer {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #95a5a6;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-links {
+    grid-template-columns: 1fr;
+  }
 }
 
 .btn {

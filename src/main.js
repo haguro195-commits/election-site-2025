@@ -6,13 +6,15 @@ import PartyNews from './components/PartyNews.vue'
 import ElectionMap from './components/ElectionMap.vue'
 import SeatPrediction from './components/SeatPrediction.vue'
 import Favorites from './components/Favorites.vue'
+import NotFound from './components/NotFound.vue'
 
 const routes = [
     { path: '/', component: Home },
     { path: '/party/:party', component: PartyNews, props: true },
     { path: '/map', component: ElectionMap },
     { path: '/prediction', component: SeatPrediction },
-    { path: '/favorites', component: Favorites }
+    { path: '/favorites', component: Favorites },
+    { path: '/:pathMatch(.*)*', component: NotFound }
 ]
 
 const router = createRouter({
