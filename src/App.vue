@@ -3,7 +3,7 @@
     <header class="header">
       <nav class="navbar">
         <div class="nav-brand">
-          <h1>衆議院選挙2025</h1>
+          <h1>衆議院選挙2026</h1>
         </div>
         <ul class="nav-menu">
           <li><router-link to="/">ホーム</router-link></li>
@@ -21,8 +21,8 @@
     <footer class="footer">
       <div class="footer-content">
         <div class="footer-info">
-          <h3>衆議院選挙2025情報サイト</h3>
-          <p>2025年2月実施予定の衆議院選挙に関する最新情報を提供</p>
+          <h3>衆議院選挙2026情報サイト</h3>
+          <p>2026年2月実施予定の衆議院選挙に関する最新情報を提供</p>
         </div>
         <div class="footer-links">
           <div class="link-group">
@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2025 衆議院選挙情報サイト - 最新の選挙情報をお届けします</p>
+        <p>&copy; 2026 衆議院選挙情報サイト - 最新の選挙情報をお届けします</p>
         <p class="disclaimer">※ 議席予測は統計的推定に基づくものであり、実際の選挙結果を保証するものではありません</p>
       </div>
     </footer>

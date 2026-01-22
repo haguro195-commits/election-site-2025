@@ -12,10 +12,10 @@ export function useNewsStore() {
                 {
                     id: 1,
                     title: '自民党、次期衆院選に向けて候補者調整を本格化',
-                    summary: '自民党は2025年2月の衆議院選挙に向けて、各選挙区での候補者調整を本格化させている。特に激戦区では現職議員の再選に向けた戦略を練り直している。',
+                    summary: '自民党は2026年2月の衆議院選挙に向けて、各選挙区での候補者調整を本格化させている。特に激戦区では現職議員の再選に向けた戦略を練り直している。',
                     url: 'https://example.com/news/1',
                     source: '政治新聞',
-                    date: '2025-01-22',
+                    date: '2026-01-22',
                     parties: ['ldp']
                 },
                 {
@@ -24,7 +24,7 @@ export function useNewsStore() {
                     summary: '立憲民主党は他の野党との選挙協力について協議を重ねており、候補者の一本化に向けた調整を進めている。',
                     url: 'https://example.com/news/2',
                     source: '朝日新聞',
-                    date: '2025-01-21',
+                    date: '2026-01-21',
                     parties: ['cdp']
                 },
                 {
@@ -33,7 +33,7 @@ export function useNewsStore() {
                     summary: '公明党は次期衆院選の重点政策として、子育て支援の拡充を掲げる方針を固めた。教育費の負担軽減などを具体的な政策として打ち出す。',
                     url: 'https://example.com/news/3',
                     source: '読売新聞',
-                    date: '2025-01-21',
+                    date: '2026-01-21',
                     parties: ['komeito']
                 },
                 {
@@ -42,7 +42,7 @@ export function useNewsStore() {
                     summary: '日本維新の会は関西圏を中心に議席の拡大を図る戦略を発表。地方分権の推進を主要な争点として位置づけている。',
                     url: 'https://example.com/news/4',
                     source: '毎日新聞',
-                    date: '2025-01-20',
+                    date: '2026-01-20',
                     parties: ['ishin']
                 },
                 {
@@ -51,7 +51,7 @@ export function useNewsStore() {
                     summary: '国民民主党は原発政策について現実的なアプローチを取る姿勢を示し、他党との差別化を図っている。',
                     url: 'https://example.com/news/5',
                     source: '日経新聞',
-                    date: '2025-01-20',
+                    date: '2026-01-20',
                     parties: ['dpfp']
                 },
                 {
@@ -60,7 +60,7 @@ export function useNewsStore() {
                     summary: '日本共産党は所得格差の是正を最重要課題として掲げ、富裕層への課税強化などの政策を提案している。',
                     url: 'https://example.com/news/6',
                     source: 'しんぶん赤旗',
-                    date: '2025-01-19',
+                    date: '2026-01-19',
                     parties: ['jcp']
                 }
             ]

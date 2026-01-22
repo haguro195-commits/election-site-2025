@@ -1,8 +1,8 @@
 <template>
   <div class="home">
     <section class="hero">
-      <h2>衆議院選挙2025 最新情報</h2>
-      <p>2025年2月実施予定の衆議院選挙に関する最新ニュースと情報をお届けします</p>
+      <h2>衆議院選挙2026 最新情報</h2>
+      <p>2026年2月実施予定の衆議院選挙に関する最新ニュースと情報をお届けします</p>
     </section>
 
     <section class="party-tabs">
