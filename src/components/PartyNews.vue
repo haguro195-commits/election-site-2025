@@ -21,32 +21,47 @@
     </div>
 
     <div v-if="loading" class="loading">
-      ニュースを読み込み中...
+      <div class="loading-spinner"></div>
+      <p>{{ partyName }}のニュースを取得中...</p>
     </div>
 
     <div v-else-if="filteredNews.length === 0" class="no-news">
       <p>{{ partyName }}に関するニュースが見つかりませんでした。</p>
+      <p class="suggestion">他の政党のニュースをご覧いただくか、しばらく後に再度お試しください。</p>
       <router-link to="/" class="btn">全てのニュースを見る</router-link>
     </div>
 
     <div v-else class="news-list">
+      <div class="news-header">
+        <div class="news-count">
+          {{ partyName }}関連ニュース: {{ filteredNews.length }}件
+        </div>
+        <div v-if="newsStore.lastUpdated" class="update-info">
+          最終更新: {{ formatDate(newsStore.lastUpdated) }}
+        </div>
+      </div>
+      
       <article 
         v-for="article in filteredNews" 
         :key="article.id"
         class="news-item card"
       >
+        <div v-if="article.imageUrl" class="news-image">
+          <img :src="article.imageUrl" :alt="article.title" />
+        </div>
         <h3>{{ article.title }}</h3>
         <p class="news-meta">
           {{ formatDate(article.date) }} - {{ article.source }}
         </p>
         <p class="news-summary">{{ article.summary }}</p>
-        <div class="news-tags">
+        <div class="news-tags" v-if="article.parties">
           <span 
-            v-for="tag in article.tags" 
-            :key="tag"
+            v-for="partyId in article.parties" 
+            :key="partyId"
             class="tag"
+            :style="{ backgroundColor: getPartyColor(partyId) }"
           >
-            {{ tag }}
+            {{ getPartyName(partyId) }}
           </span>
         </div>
         <div class="news-actions">
@@ -181,8 +196,39 @@ export default {
       console.log('Load more news for', route.params.party)
     }
 
+    const getPartyName = (partyId) => {
+      const partyNames = {
+        'ldp': '自民党',
+        'cdp': '立憲民主党',
+        'komeito': '公明党',
+        'dpfp': '国民民主党',
+        'jcp': '共産党',
+        'ishin': '日本維新の会',
+        'reiwa': 'れいわ新選組',
+        'sanseito': '参政党',
+        'other': 'その他'
+      }
+      return partyNames[partyId] || partyId
+    }
+
+    const getPartyColor = (partyId) => {
+      const colors = {
+        'ldp': '#FF6B6B',
+        'cdp': '#4ECDC4',
+        'komeito': '#45B7D1',
+        'dpfp': '#BB8FCE',
+        'jcp': '#EC7063',
+        'ishin': '#F7DC6F',
+        'reiwa': '#85C1E9',
+        'sanseito': '#F8C471',
+        'other': '#95A5A6'
+      }
+      return colors[partyId] || '#95A5A6'
+    }
+
     const loadPartyNews = async () => {
       loading.value = true
+      // リアルタイムニュース取得を使用
       await newsStore.fetchNews()
       loading.value = false
     }
@@ -194,6 +240,8 @@ export default {
 
     onMounted(() => {
       loadPartyNews()
+      // 5分ごとに自動更新
+      setInterval(loadPartyNews, 5 * 60 * 1000)
     })
 
     return {
@@ -210,7 +258,10 @@ export default {
       formatDate,
       sortNews,
       filterBySource,
-      loadMore
+      loadMore,
+      getPartyName,
+      getPartyColor,
+      newsStore
     }
   }
 }
@@ -231,6 +282,27 @@ export default {
   margin-bottom: 0.5rem;
 }
 
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #7f8c8d;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .news-filters {
   display: flex;
   gap: 1rem;
@@ -245,16 +317,51 @@ export default {
   background: white;
 }
 
-.loading,
 .no-news {
   text-align: center;
   padding: 3rem;
   color: #7f8c8d;
 }
 
+.suggestion {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
 .news-list {
   display: grid;
   gap: 1.5rem;
+}
+
+.news-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.news-count {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.update-info {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.news-image {
+  margin-bottom: 1rem;
+}
+
+.news-image img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
 }
 
 .news-item h3 {
@@ -282,11 +389,11 @@ export default {
 }
 
 .tag {
-  background: #ecf0f1;
-  color: #2c3e50;
+  color: white;
   padding: 0.25rem 0.5rem;
   border-radius: 12px;
   font-size: 0.8rem;
+  font-weight: bold;
 }
 
 .news-actions {
@@ -298,5 +405,21 @@ export default {
 .load-more {
   text-align: center;
   margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .news-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .news-filters {
+    flex-direction: column;
+  }
+  
+  .news-actions {
+    flex-direction: column;
+  }
 }
 </style>
