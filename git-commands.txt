@@ -1,0 +1,21 @@
+# Git Bashで実行するコマンド一覧
+
+# 1. Gitリポジトリを初期化
+git init
+
+# 2. ユーザー情報を設定（初回のみ）
+git config --global user.name "あなたの名前"
+git config --global user.email "あなたのメールアドレス"
+
+# 3. ファイルをステージング
+git add .
+
+# 4. 初回コミット
+git commit -m "衆議院選挙2025サイト初回コミット"
+
+# 5. ブランチ名をmainに変更（必要に応じて）
+git branch -M main
+
+# 注意: 次のコマンドは、GitHubでリポジトリを作成してから実行してください
+# git remote add origin https://github.com/あなたのユーザー名/election-site-2025.git
+# git push -u origin main
