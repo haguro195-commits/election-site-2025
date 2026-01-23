@@ -108,16 +108,8 @@
 
 <script>
 import { ref, onMounted, nextTick } from 'vue'
-import L from 'leaflet'
+import { Loader } from '@googlemaps/js-api-loader'
 import axios from 'axios'
-
-// Leafletのアイコン問題を修正
-delete L.Icon.Default.prototype._getIconUrl
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-})
 
 export default {
   name: 'ElectionMap',
@@ -174,62 +166,173 @@ export default {
         
         // フォールバック: サンプルデータを使用
         districts.value = [
-          {
-            id: 1,
-            name: '東京1区',
-            prefecture: '東京都',
-            lat: 35.6762,
-            lng: 139.6503,
-            candidates: [
-              {
-                id: 1,
-                name: '田中太郎',
-                party: '自民党',
-                age: 45,
-                experience: '元県議会議員',
-                education: '東京大学法学部',
-                career: '県議会議員2期、弁護士',
-                policies: ['経済成長', '地方創生'],
-                isIncumbent: true
-              },
-              {
-                id: 2,
-                name: '佐藤花子',
-                party: '立憲民主党',
-                age: 38,
-                experience: '弁護士',
-                education: '早稲田大学法学部',
-                career: '弁護士10年、市民活動',
-                policies: ['子育て支援', '環境保護'],
-                isIncumbent: false
-              }
-            ]
-          }
+            {
+              id: 1,
+              name: '北海道1区',
+              prefecture: '北海道',
+              lat: 43.0642,
+              lng: 141.3469,
+              candidates: [
+                {
+                  id: 1,
+                  name: '佐藤北海',
+                  party: '自民党',
+                  age: 52,
+                  experience: '元道議会議員',
+                  education: '北海道大学法学部',
+                  career: '弁護士、道議会議員2期',
+                  policies: ['地域経済活性化', '農業支援', '観光振興'],
+                  isIncumbent: true
+                },
+                {
+                  id: 2,
+                  name: '田中雪子',
+                  party: '立憲民主党',
+                  age: 45,
+                  experience: '元市議会議員',
+                  education: '早稲田大学政治経済学部',
+                  career: '市議会議員3期、NPO代表',
+                  policies: ['子育て支援', '環境保護', '格差是正'],
+                  isIncumbent: false
+                }
+              ]
+            },
+            {
+              id: 2,
+              name: '東京1区',
+              prefecture: '東京都',
+              lat: 35.6762,
+              lng: 139.6503,
+              candidates: [
+                {
+                  id: 3,
+                  name: '山田太郎',
+                  party: '公明党',
+                  age: 58,
+                  experience: '元区議会議員',
+                  education: '慶應義塾大学経済学部',
+                  career: '区議会議員4期、会社員',
+                  policies: ['福祉充実', '教育改革', '平和外交'],
+                  isIncumbent: false
+                }
+              ]
+            },
+            {
+              id: 3,
+              name: '大阪1区',
+              prefecture: '大阪府',
+              lat: 34.6937,
+              lng: 135.5023,
+              candidates: [
+                {
+                  id: 4,
+                  name: '鈴木花子',
+                  party: '国民民主党',
+                  age: 41,
+                  experience: '元府議会議員',
+                  education: '大阪大学法学部',
+                  career: '府議会議員2期、弁護士',
+                  policies: ['働き方改革', '女性活躍', '地方創生'],
+                  isIncumbent: true
+                }
+              ]
+            },
+            {
+              id: 4,
+              name: '愛知1区',
+              prefecture: '愛知県',
+              lat: 35.1815,
+              lng: 136.9066,
+              candidates: [
+                {
+                  id: 5,
+                  name: '高橋次郎',
+                  party: '日本維新の会',
+                  age: 48,
+                  experience: '元市議会議員',
+                  education: '名古屋大学工学部',
+                  career: '市議会議員3期、エンジニア',
+                  policies: ['デジタル化推進', '規制緩和', '行政改革'],
+                  isIncumbent: false
+                }
+              ]
+            },
+            {
+              id: 5,
+              name: '福岡1区',
+              prefecture: '福岡県',
+              lat: 33.5904,
+              lng: 130.4017,
+              candidates: [
+                {
+                  id: 6,
+                  name: '伊藤美咲',
+                  party: 'れいわ新選組',
+                  age: 39,
+                  experience: '市民活動家',
+                  education: '九州大学法学部',
+                  career: 'NPO代表、市民活動10年',
+                  policies: ['格差是正', '最低賃金引上げ', '消費税廃止'],
+                  isIncumbent: false
+                }
+              ]
+            }
         ]
       } finally {
         loading.value = false
       }
     }
 
-    const initMap = () => {
-      map.value = L.map(mapContainer.value).setView([36.2048, 138.2529], 6)
-      
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-      }).addTo(map.value)
+    const initMap = async () => {
+      const loader = new Loader({
+        apiKey: "AIzaSyBFw0Qbyq9zTFTd-tUY6dOWTgHz-w-9RuY", // デモ用キー（実際の使用時は環境変数に設定）
+        version: "weekly",
+        libraries: ["places"]
+      })
 
-      updateMapMarkers()
+      try {
+        const google = await loader.load()
+        
+        map.value = new google.maps.Map(mapContainer.value, {
+          center: { lat: 36.2048, lng: 138.2529 }, // 日本の中心
+          zoom: 6,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          styles: [
+            {
+              featureType: "administrative",
+              elementType: "geometry",
+              stylers: [{ visibility: "off" }]
+            },
+            {
+              featureType: "poi",
+              stylers: [{ visibility: "off" }]
+            }
+          ]
+        })
+
+        updateMapMarkers()
+      } catch (error) {
+        console.error('Google Maps読み込みエラー:', error)
+        // フォールバック: シンプルな地図表示
+        mapContainer.value.innerHTML = `
+          <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #f8f9fa; color: #6c757d;">
+            <div style="text-align: center;">
+              <p>地図を読み込めませんでした</p>
+              <p>選挙区情報は下記の一覧でご確認ください</p>
+            </div>
+          </div>
+        `
+      }
     }
 
-    const updateMapMarkers = () => {
-      if (!map.value) return
+    const updateMapMarkers = async () => {
+      if (!map.value || !window.google) return
 
       // 既存のマーカーをクリア
-      map.value.eachLayer((layer) => {
-        if (layer instanceof L.Marker) {
-          map.value.removeLayer(layer)
-        }
-      })
+      if (window.mapMarkers) {
+        window.mapMarkers.forEach(marker => marker.setMap(null))
+      }
+      window.mapMarkers = []
 
       // フィルタリングされた選挙区のマーカーを追加
       const filteredDistricts = getFilteredDistricts()
@@ -247,18 +350,39 @@ export default {
         )
         const markerColor = getPartyColor(dominantParty)
 
-        // カスタムマーカーアイコンを作成
-        const customIcon = L.divIcon({
-          className: 'custom-marker',
-          html: `<div style="background-color: ${markerColor}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>`,
-          iconSize: [20, 20],
-          iconAnchor: [10, 10]
+        // Google Mapsマーカーを作成
+        const marker = new google.maps.Marker({
+          position: { lat: district.lat, lng: district.lng },
+          map: map.value,
+          title: district.name,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 10,
+            fillColor: markerColor,
+            fillOpacity: 0.8,
+            strokeColor: '#ffffff',
+            strokeWeight: 2
+          }
         })
 
-        const marker = L.marker([district.lat, district.lng], { icon: customIcon })
-          .addTo(map.value)
-          .bindPopup(createPopupContent(district))
-          .on('click', () => selectDistrict(district.id))
+        // 情報ウィンドウを作成
+        const infoWindow = new google.maps.InfoWindow({
+          content: createPopupContent(district)
+        })
+
+        // マーカークリックイベント
+        marker.addListener('click', () => {
+          // 他の情報ウィンドウを閉じる
+          if (window.currentInfoWindow) {
+            window.currentInfoWindow.close()
+          }
+          
+          infoWindow.open(map.value, marker)
+          window.currentInfoWindow = infoWindow
+          selectDistrict(district.id)
+        })
+
+        window.mapMarkers.push(marker)
       })
     }
 
@@ -268,14 +392,14 @@ export default {
       ).join('')
 
       return `
-        <div class="map-popup">
-          <h4>${district.name}</h4>
-          <p><strong>立候補者数:</strong> ${district.candidates.length}人</p>
-          <ul style="margin: 0.5rem 0; padding-left: 1rem;">
+        <div class="map-popup" style="min-width: 200px;">
+          <h4 style="margin: 0 0 0.5rem 0; color: #2c3e50; font-size: 1.1rem;">${district.name}</h4>
+          <p style="margin: 0.25rem 0; font-weight: bold;">立候補者数: ${district.candidates.length}人</p>
+          <ul style="margin: 0.5rem 0; padding-left: 1rem; max-height: 120px; overflow-y: auto;">
             ${candidatesList}
           </ul>
           <button onclick="window.selectDistrictFromMap(${district.id})" 
-                  style="background: #3498db; color: white; border: none; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer;">
+                  style="background: #3498db; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 0.5rem;">
             詳細を見る
           </button>
         </div>
@@ -446,6 +570,7 @@ export default {
   color: #495057;
 }
 
+/* Google Maps用のスタイル */
 .map-container {
   height: 500px;
   margin: 1rem 0;
@@ -457,6 +582,37 @@ export default {
 #map {
   height: 100%;
   width: 100%;
+}
+
+/* Google Maps情報ウィンドウ内のスタイル */
+.gm-style-iw {
+  padding: 0;
+}
+
+.gm-style-iw-d {
+  overflow: hidden !important;
+}
+
+.map-popup {
+  padding: 0.5rem;
+}
+
+.map-popup h4 {
+  margin: 0 0 0.5rem 0;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+.map-popup ul {
+  margin: 0.5rem 0;
+  padding-left: 1rem;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.map-popup li {
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
 }
 
 .district-info {
@@ -564,26 +720,9 @@ export default {
   padding-top: 1rem;
 }
 
-/* カスタムマーカー用のスタイル */
-.custom-marker {
-  background: transparent;
-  border: none;
-}
+/* カスタムマーカー用のスタイル（削除） */
 
-/* マップポップアップのスタイル */
-.map-popup h4 {
-  margin: 0 0 0.5rem 0;
-  color: #2c3e50;
-}
-
-.map-popup ul {
-  margin: 0.5rem 0;
-  padding-left: 1rem;
-}
-
-.map-popup li {
-  margin-bottom: 0.25rem;
-}
+/* マップポップアップのスタイル（Google Maps用に調整済み） */
 
 @media (max-width: 768px) {
   .map-controls {
