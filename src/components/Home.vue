@@ -51,7 +51,11 @@
 
     <section class="quick-links">
       <h3>クイックアクセス</h3>
-      <div class="grid grid-3">
+      <div class="grid grid-4">
+        <router-link to="/candidates" class="quick-link card">
+          <h4>👥 候補者一覧</h4>
+          <p>政党別に整理された候補者情報を確認</p>
+        </router-link>
         <router-link to="/map" class="quick-link card">
           <h4>🗾 選挙区マップ</h4>
           <p>全国の選挙区と立候補者情報を地図で確認</p>

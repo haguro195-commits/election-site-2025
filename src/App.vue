@@ -7,6 +7,7 @@
         </div>
         <ul class="nav-menu">
           <li><router-link to="/">ホーム</router-link></li>
+          <li><router-link to="/candidates">候補者一覧</router-link></li>
           <li><router-link to="/map">選挙区マップ</router-link></li>
           <li><router-link to="/prediction">議席予測</router-link></li>
           <li><router-link to="/favorites">お気に入り</router-link></li>

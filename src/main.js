@@ -6,12 +6,16 @@ import PartyNews from './components/PartyNews.vue'
 import ElectionMap from './components/ElectionMap.vue'
 import SeatPrediction from './components/SeatPrediction.vue'
 import Favorites from './components/Favorites.vue'
+import CandidateList from './components/CandidateList.vue'
+import CandidateDetail from './components/CandidateDetail.vue'
 import NotFound from './components/NotFound.vue'
 
 const routes = [
     { path: '/', component: Home },
     { path: '/party/:party', component: PartyNews, props: true },
     { path: '/map', component: ElectionMap },
+    { path: '/candidates', component: CandidateList },
+    { path: '/candidate/:id', component: CandidateDetail, props: true },
     { path: '/prediction', component: SeatPrediction },
     { path: '/favorites', component: Favorites },
     { path: '/:pathMatch(.*)*', component: NotFound }
